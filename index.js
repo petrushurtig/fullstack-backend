@@ -1,35 +1,17 @@
 import express from "express"
 import morgan from "morgan";
-const app = express()
+import cors from 'cors';
 
+const app = express()
 app.use(express.json())
+app.use(cors())
 app.use(morgan('tiny'))
+
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'));
 
-let persons = [
-          { 
-            "name": "Arto Hellas", 
-            "number": "040-123456",
-            "id": 1
-          },
-          { 
-            "name": "Ada Lovelace", 
-            "number": "39-44-5323523",
-            "id": 2
-          },
-          { 
-            "name": "Dan Abramov", 
-            "number": "12-43-234345",
-            "id": 3
-          },
-          { 
-            "name": "Mary Poppendieck", 
-            "number": "39-23-6423122",
-            "id": 4
-          }
-]
 app.get('/api/persons', (req, res) => {
+    console.log(persons)
   res.json(persons)
 })
 app.get('/api/persons/:id', (req, res) => {
@@ -81,7 +63,29 @@ app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${amount} people</p><p>${time}</p>`)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+let persons = [
+    { 
+      "name": "Arto Hellas", 
+      "number": "040-123456",
+      "id": 1
+    },
+    { 
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    { 
+      "name": "Dan Abramov", 
+      "number": "12-43-234345",
+      "id": 3
+    },
+    { 
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122",
+      "id": 4
+    }
+]
