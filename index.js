@@ -7,10 +7,7 @@ const Person = require('./models/person');
 
 app.use(express.static('build'))
 app.use(express.json())
-app.use(morgan('tiny'))
 app.use(cors())
-
-
 
 morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'));
@@ -32,14 +29,9 @@ app.get('/api/persons/:id', (req, res, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body;
-    if(body.name === undefined){
-        return res.status(400).json({error: 'name missing'})
-    }
-    if(body.number === undefined){
-        return res.status(400).json({error:'number missing'})
-    }
+    
     const person = new Person({
         name: body.name,
         number: body.number
@@ -47,6 +39,7 @@ app.post('/api/persons', (req, res) => {
     person.save().then(savedPerson => {
         res.json(savedPerson)
     })
+    .catch(error => next(error))
 })
 app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
