@@ -42,7 +42,7 @@ app.post('/api/persons', (req, res, next) => {
 })
 app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
-        .then(res => {
+        .then(() => {
             res.status(204).end()
         })
         .catch(error => next(error))
