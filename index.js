@@ -54,15 +54,14 @@ app.put('/api/persons/:id', (req, res, next) => {
         name: body.name,
         number: body.number
     }
-    Person.findByIdAndUpdate(req.params.id, person, { new: true})
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
         .then(updatedPerson => {
             res.json(updatedPerson)
         })
         .catch(error => next(error))
 })
 app.get('/info', (req, res) => {
-    const amount = 
-    Person.find({}).then(people => {
+    const amount = Person.find({}).then(people => {
         return people.length
     })
     const time = new Date()
@@ -71,12 +70,12 @@ app.get('/info', (req, res) => {
 const errorHandler = (error, req, res, next) => {
     console.error(error.message)
     if(error.name === 'CastError') {
-        return res.status(400).send({error: 'malformatted id'})
+        return res.status(400).send({ error: 'malformatted id' })
     }
     next(error)
 }
 const unknownEnpoint = (req, res) => {
-    res.status(404).send({ error: 'unknown endpoint'})
+    res.status(404).send({ error: 'unknown endpoint' })
 }
 app.use(unknownEnpoint)
 app.use(errorHandler)
